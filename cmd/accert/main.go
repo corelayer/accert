@@ -40,7 +40,15 @@ func main() {
 func run() error {
 	// var err error
 
+	var logLevelFlag string
+	var logLevelFormat string
+
 	app := base.NewApplication(APPLICATION_NAME, APPLICATION_TITLE, APPLICATION_BANNER, "")
+
+	// Add application command-line flags
+	app.Command.PersistentFlags().StringVarP(&logLevelFlag, "loglevel", "l", "info", "log level")
+	app.Command.PersistentFlags().StringVarP(&logLevelFormat, "logformat", "", "json", "log format")
+
 	app.RegisterCommands([]base.Commander{
 		daemon.Command,
 		console.Command,

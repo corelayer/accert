@@ -18,6 +18,8 @@ package console
 
 import (
 	"fmt"
+	"log/slog"
+	"os"
 
 	"github.com/corelayer/go-application/pkg/base"
 	"github.com/spf13/cobra"
@@ -36,6 +38,18 @@ var Command = base.Command{
 }
 
 func execute(cmd *cobra.Command, args []string) error {
+	var (
+		err    error
+		logger *slog.Logger
+	)
 	fmt.Println("CONSOLE")
+
+	logger, err = base.GetLogger(cmd, os.Stdout)
+	if err != nil {
+		return err
+	}
+
+	slog.SetDefault(logger)
+	slog.Info("test")
 	return nil
 }
