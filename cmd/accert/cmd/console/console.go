@@ -14,36 +14,28 @@
  *    limitations under the License.
  */
 
-package main
+package console
 
 import (
-	"os"
+	"fmt"
 
 	"github.com/corelayer/go-application/pkg/base"
-
-	"github.com/corelayer/accert/cmd/accert/cmd/console"
-	"github.com/corelayer/accert/cmd/accert/cmd/daemon"
+	"github.com/spf13/cobra"
 )
 
-const (
-	APPLICATION_NAME   = "accert"
-	APPLICATION_TITLE  = "ACME Protocol-based Certificate Manager"
-	APPLICATION_BANNER = "ACME Protocol-based Certificate Manager"
-)
-
-func main() {
-	if err := run(); err != nil {
-		os.Exit(1)
-	}
+var Command = base.Command{
+	Cobra: &cobra.Command{
+		Use:           "console",
+		Short:         "Console mode",
+		Long:          "ACME Protocol-based Certificate Manager - Console mode",
+		RunE:          execute,
+		SilenceErrors: true,
+		SilenceUsage:  true,
+	},
+	SubCommands: nil,
 }
 
-func run() error {
-	// var err error
-
-	app := base.NewApplication(APPLICATION_NAME, APPLICATION_TITLE, APPLICATION_BANNER, "")
-	app.RegisterCommands([]base.Commander{
-		daemon.Command,
-		console.Command,
-	})
-	return app.Run()
+func execute(cmd *cobra.Command, args []string) error {
+	fmt.Println("CONSOLE")
+	return nil
 }
