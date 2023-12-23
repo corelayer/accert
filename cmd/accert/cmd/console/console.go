@@ -19,7 +19,6 @@ package console
 import (
 	"fmt"
 	"log/slog"
-	"os"
 
 	"github.com/corelayer/go-application/pkg/base"
 	"github.com/spf13/cobra"
@@ -33,23 +32,16 @@ var Command = base.Command{
 		RunE:          execute,
 		SilenceErrors: true,
 		SilenceUsage:  true,
+		Annotations: map[string]string{
+			"logtarget": "console.log",
+		},
 	},
 	SubCommands: nil,
 }
 
 func execute(cmd *cobra.Command, args []string) error {
-	var (
-		err    error
-		logger *slog.Logger
-	)
 	fmt.Println("CONSOLE")
-
-	logger, err = base.GetLogger(cmd, os.Stdout)
-	if err != nil {
-		return err
-	}
-
-	slog.SetDefault(logger)
-	slog.Info("test")
+	slog.Info("CONSOLE INFO")
+	slog.Error("CONSOLE ERROR")
 	return nil
 }
