@@ -18,6 +18,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/corelayer/go-application/pkg/base"
 
@@ -31,6 +32,13 @@ const (
 	APPLICATION_BANNER = "ACME Protocol-based Certificate Manager"
 )
 
+var (
+	configSearchPaths = []string{
+		filepath.Join("$HOME", ".lens"),
+		filepath.Join("$PWD"),
+	}
+)
+
 func main() {
 	if err := run(); err != nil {
 		os.Exit(1)
@@ -38,8 +46,15 @@ func main() {
 }
 
 func run() error {
-	// var err error
+	var (
+		// err error
+
+		configFileFlag   string
+		configSearchFlag []string
+	)
 	app := base.NewApplication(APPLICATION_NAME, APPLICATION_TITLE, APPLICATION_BANNER, "")
+	app.Command.PersistentFlags().StringVarP(&configFileFlag, "configFile", "", "config.yaml", "config file name")
+	app.Command.PersistentFlags().StringSliceVarP(&configSearchFlag, "configSearchPath", "", configSearchPaths, "config file search paths")
 
 	app.RegisterCommands([]base.Commander{
 		daemon.Command,

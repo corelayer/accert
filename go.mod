@@ -3,7 +3,7 @@ module github.com/corelayer/accert
 go 1.21.5
 
 require (
-	github.com/corelayer/go-application v0.0.0-20231223001921-7f67ff017ad1
+	github.com/corelayer/go-application v0.0.0-20231227122052-831aedfee835
 	github.com/spf13/cobra v1.8.0
 )
 

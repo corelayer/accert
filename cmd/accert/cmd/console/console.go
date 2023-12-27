@@ -40,7 +40,18 @@ var Command = base.Command{
 }
 
 func execute(cmd *cobra.Command, args []string) error {
+	slog.Info("application started")
+	defer slog.Info("application terminated")
+
 	fmt.Println("CONSOLE")
+	fmt.Println("FLAGS")
+	for _, f := range cmd.Flags().Args() {
+		fmt.Println(f)
+	}
+	fmt.Println("ARGS")
+	for _, a := range args {
+		fmt.Println(a)
+	}
 	slog.Info("CONSOLE INFO")
 	slog.Error("CONSOLE ERROR")
 	return nil

@@ -1,13 +1,9 @@
-github.com/corelayer/go-application v0.0.0-20231222165228-f6b0a49d0634 h1:IXVhnvhmdk5otw8fsfdq71hPCX3InS5sR9MLUaGUK4o=
-github.com/corelayer/go-application v0.0.0-20231222165228-f6b0a49d0634/go.mod h1:xBzaUiTHHwtzvW3zXuC/SUvJ/5bz80JZCkyVDqWF0tQ=
-github.com/corelayer/go-application v0.0.0-20231222203352-d476fc24fc10 h1:E/wtwoYjM5Xyol9SKwPM9w3QmCLsYGnfUaOH3Xyz2S8=
-github.com/corelayer/go-application v0.0.0-20231222203352-d476fc24fc10/go.mod h1:xBzaUiTHHwtzvW3zXuC/SUvJ/5bz80JZCkyVDqWF0tQ=
-github.com/corelayer/go-application v0.0.0-20231222203705-f80302493580 h1:mxoUeYrUBjeScU+rME9hpr13c2xqRHjaKsO0EqpHprU=
-github.com/corelayer/go-application v0.0.0-20231222203705-f80302493580/go.mod h1:xBzaUiTHHwtzvW3zXuC/SUvJ/5bz80JZCkyVDqWF0tQ=
-github.com/corelayer/go-application v0.0.0-20231222233126-cc38488399f4 h1:7R3mqytznlCjoeaMksHmw4FulMSDZyYZqAWwTp3/aWk=
-github.com/corelayer/go-application v0.0.0-20231222233126-cc38488399f4/go.mod h1:xBzaUiTHHwtzvW3zXuC/SUvJ/5bz80JZCkyVDqWF0tQ=
 github.com/corelayer/go-application v0.0.0-20231223001921-7f67ff017ad1 h1:AheuVVPN4kr8vKhBgZx8jpARMWOJ5W1zd6PLO6HomKc=
 github.com/corelayer/go-application v0.0.0-20231223001921-7f67ff017ad1/go.mod h1:xBzaUiTHHwtzvW3zXuC/SUvJ/5bz80JZCkyVDqWF0tQ=
+github.com/corelayer/go-application v0.0.0-20231223090310-0514df2cb2e3 h1:+L7WtXJlaF80SP+Vk5+N9AMr53E16aF1bvSmVsQ7xmU=
+github.com/corelayer/go-application v0.0.0-20231223090310-0514df2cb2e3/go.mod h1:xBzaUiTHHwtzvW3zXuC/SUvJ/5bz80JZCkyVDqWF0tQ=
+github.com/corelayer/go-application v0.0.0-20231227122052-831aedfee835 h1:Woer7am0J+FzvwIR3TfdOf4V8/fZQvXW+3Agc2T9YwM=
+github.com/corelayer/go-application v0.0.0-20231227122052-831aedfee835/go.mod h1:xBzaUiTHHwtzvW3zXuC/SUvJ/5bz80JZCkyVDqWF0tQ=
 github.com/cpuguy83/go-md2man/v2 v2.0.3/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
