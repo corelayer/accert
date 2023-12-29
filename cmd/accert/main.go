@@ -24,6 +24,7 @@ import (
 
 	"github.com/corelayer/accert/cmd/accert/cmd/console"
 	"github.com/corelayer/accert/cmd/accert/cmd/daemon"
+	"github.com/corelayer/accert/cmd/accert/shared"
 )
 
 const (
@@ -46,15 +47,10 @@ func main() {
 }
 
 func run() error {
-	var (
-		// err error
-
-		configFileFlag   string
-		configSearchFlag []string
-	)
 	app := base.NewApplication(APPLICATION_NAME, APPLICATION_TITLE, APPLICATION_BANNER, "")
-	app.Command.PersistentFlags().StringVarP(&configFileFlag, "configFile", "", "config.yaml", "config file name")
-	app.Command.PersistentFlags().StringSliceVarP(&configSearchFlag, "configSearchPath", "", configSearchPaths, "config file search paths")
+	app.Command.PersistentFlags().StringVarP(&shared.RootFlags.ConfigFile, "configFile", "", "config.yaml", "config file name")
+	app.Command.PersistentFlags().StringSliceVarP(&shared.RootFlags.SearchFlag, "configSearchPath", "", configSearchPaths, "config file search paths")
+	app.Command.PersistentFlags().BoolVarP(&shared.RootFlags.Encrypted, "encrypted", "e", false, "config file encrypted")
 
 	app.RegisterCommands([]base.Commander{
 		daemon.Command,
