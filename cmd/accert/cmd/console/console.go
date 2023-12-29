@@ -17,11 +17,14 @@
 package console
 
 import (
+	"encoding/hex"
 	"fmt"
 	"log/slog"
 
 	"github.com/corelayer/go-application/pkg/base"
 	"github.com/spf13/cobra"
+
+	"github.com/corelayer/accert/cmd/accert/shared"
 )
 
 var Command = base.Command{
@@ -42,17 +45,62 @@ var Command = base.Command{
 func execute(cmd *cobra.Command, args []string) error {
 	slog.Info("application started")
 	defer slog.Info("application terminated")
+	slog.Warn("flags", "set", shared.RootFlags)
 
-	fmt.Println("CONSOLE")
-	fmt.Println("FLAGS")
-	for _, f := range cmd.Flags().Args() {
-		fmt.Println(f)
+	rootConfig := base.NewConfiguration(shared.RootFlags.ConfigFile, "", shared.RootFlags.SearchFlag)
+	rootViper := rootConfig.GetViper()
+
+	// Environment flags should go to different viper!!!!!
+	rootViper.SetEnvPrefix("accert")
+	rootViper.BindEnv("key")
+
+	var err error
+	err = rootViper.ReadInConfig()
+	if err != nil {
+		slog.Error("could not read config", "error", err.Error())
+		return err
 	}
-	fmt.Println("ARGS")
-	for _, a := range args {
-		fmt.Println(a)
+
+	var rootData base.SecureData
+	err = rootViper.Unmarshal(&rootData)
+	if err != nil {
+		slog.Error("could not unmarshal config", "error", err.Error())
+		return err
 	}
-	slog.Info("CONSOLE INFO")
-	slog.Error("CONSOLE ERROR")
+
+	fmt.Println(rootData)
+
+	masterKey := rootViper.GetString("key")
+	fmt.Println(masterKey)
+	var decodedMaster []byte
+	decodedMaster, err = hex.DecodeString(masterKey)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	fmt.Println(decodedMaster)
+	err = rootData.Decrypt(masterKey)
+	if err != nil {
+		return err
+	}
+	// err = rootData.Encrypt(masterKey)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return err
+	// }
+	fmt.Println(rootData)
+	//
+	// var rootBytes []byte
+	// rootBytes, err = yaml.Marshal(rootData)
+	// err = rootViper.ReadConfig(bytes.NewBuffer(rootBytes))
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return err
+	// }
+	// err = rootViper.WriteConfig()
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return err
+	// }
 	return nil
 }
