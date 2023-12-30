@@ -14,24 +14,24 @@
  *    limitations under the License.
  */
 
-package shared
+package config
 
-const (
-	APPLICATION_NAME                        = "accert"
-	APPLICATION_TITLE                       = "ACME Protocol-based Certificate Manager"
-	APPLICATION_BANNER                      = "ACME Protocol-based Certificate Manager"
-	APPLICATION_ENVIRONMENT_VARIABLE_PREFIX = "accert"
-	APPLICATION_ENVIRONMENT_ENCRYPTION_KEY  = "key"
+import (
+	"github.com/corelayer/go-application/pkg/base"
+	"github.com/spf13/cobra"
 )
 
-type PersistentFlags struct {
-	ConfigFile string
-	SearchFlag []string
-	// Encrypted  bool
-}
-
-var RootFlags *PersistentFlags
-
-func init() {
-	RootFlags = &PersistentFlags{}
+var Command = base.Command{
+	Cobra: &cobra.Command{
+		Use:           "config",
+		Short:         "Config mode",
+		Long:          "ACME Protocol-based Certificate Manager - Config mode",
+		SilenceErrors: true,
+		SilenceUsage:  true,
+	},
+	SubCommands: []base.Commander{
+		EncryptCommand,
+		DecryptCommand,
+		GlobalCommand,
+	},
 }

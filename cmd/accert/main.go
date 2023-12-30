@@ -22,20 +22,15 @@ import (
 
 	"github.com/corelayer/go-application/pkg/base"
 
+	"github.com/corelayer/accert/cmd/accert/cmd/config"
 	"github.com/corelayer/accert/cmd/accert/cmd/console"
 	"github.com/corelayer/accert/cmd/accert/cmd/daemon"
 	"github.com/corelayer/accert/cmd/accert/shared"
 )
 
-const (
-	APPLICATION_NAME   = "accert"
-	APPLICATION_TITLE  = "ACME Protocol-based Certificate Manager"
-	APPLICATION_BANNER = "ACME Protocol-based Certificate Manager"
-)
-
 var (
 	configSearchPaths = []string{
-		filepath.Join("$HOME", ".lens"),
+		filepath.Join("$HOME", ".accert"),
 		filepath.Join("$PWD"),
 	}
 )
@@ -47,14 +42,15 @@ func main() {
 }
 
 func run() error {
-	app := base.NewApplication(APPLICATION_NAME, APPLICATION_TITLE, APPLICATION_BANNER, "")
+	app := base.NewApplication(shared.APPLICATION_NAME, shared.APPLICATION_TITLE, shared.APPLICATION_BANNER, "")
 	app.Command.PersistentFlags().StringVarP(&shared.RootFlags.ConfigFile, "configFile", "", "config.yaml", "config file name")
 	app.Command.PersistentFlags().StringSliceVarP(&shared.RootFlags.SearchFlag, "configSearchPath", "", configSearchPaths, "config file search paths")
-	app.Command.PersistentFlags().BoolVarP(&shared.RootFlags.Encrypted, "encrypted", "e", false, "config file encrypted")
+	// app.Command.PersistentFlags().BoolVarP(&shared.RootFlags.Encrypted, "encrypted", "e", false, "config file encrypted")
 
 	app.RegisterCommands([]base.Commander{
 		daemon.Command,
 		console.Command,
+		config.Command,
 	})
 	return app.Run()
 }

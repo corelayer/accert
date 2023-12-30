@@ -14,12 +14,10 @@
  *    limitations under the License.
  */
 
-package console
+package config
 
 import (
 	"bytes"
-	"encoding/hex"
-	"fmt"
 	"log/slog"
 
 	"github.com/corelayer/go-application/pkg/base"
@@ -28,80 +26,84 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"github.com/corelayer/accert/cmd/accert/shared"
+	"github.com/corelayer/accert/pkg/global"
 )
 
-var Command = base.Command{
+var EncryptCommand = base.Command{
 	Cobra: &cobra.Command{
-		Use:           "console",
-		Short:         "Console mode",
-		Long:          "ACME Protocol-based Certificate Manager - Console mode",
-		RunE:          execute,
+		Use:           "encrypt",
+		Short:         "Encrypt config",
+		Long:          "ACME Protocol-based Certificate Manager - Encrypt config",
+		RunE:          executeEncrypt,
 		SilenceErrors: true,
 		SilenceUsage:  true,
-		Annotations: map[string]string{
-			"logtarget": "console.log",
-		},
 	},
 	SubCommands: nil,
 }
 
-func execute(cmd *cobra.Command, args []string) error {
+func executeEncrypt(cmd *cobra.Command, args []string) error {
 	slog.Info("application started")
 	defer slog.Info("application terminated")
 	slog.Warn("flags", "set", shared.RootFlags)
 
-	rootConfig := base.NewConfiguration(shared.RootFlags.ConfigFile, shared.RootFlags.SearchFlag)
-	rootViper := rootConfig.GetViper()
+	var (
+		err     error
+		hexData string
+
+		globalViper *viper.Viper
+		envViper    *viper.Viper
+	)
+
+	globalViper = base.NewConfiguration(shared.RootFlags.ConfigFile, shared.RootFlags.SearchFlag).GetViper()
 
 	// Environment flags should go to different viper!!!!!
-	envViper := viper.New()
-	envViper.SetEnvPrefix("accert")
-	envViper.BindEnv("key")
+	envViper = viper.New()
+	envViper.SetEnvPrefix(shared.APPLICATION_ENVIRONMENT_VARIABLE_PREFIX)
+	err = envViper.BindEnv(shared.APPLICATION_ENVIRONMENT_ENCRYPTION_KEY)
+	if err != nil {
+		return err
+	}
 
-	var err error
-	err = rootViper.ReadInConfig()
+	err = globalViper.ReadInConfig()
 	if err != nil {
 		slog.Error("could not read config", "error", err.Error())
 		return err
 	}
 
-	var rootData base.SecureData
-	err = rootViper.Unmarshal(&rootData)
+	var config global.Configuration
+	err = globalViper.Unmarshal(&config)
 	if err != nil {
-		slog.Error("could not unmarshal config", "error", err.Error())
+		return err
+	}
+	hexData, err = config.EncodeYamlToHex()
+	if err != nil {
 		return err
 	}
 
-	fmt.Println(rootData)
+	secureConfig := base.SecureData{
+		Nonce:       "",
+		CipherSuite: "AES_256_GCM",
+		HexData:     hexData,
+	}
 
-	masterKey := envViper.GetString("key")
-	fmt.Println(masterKey)
-	var decodedMaster []byte
-	decodedMaster, err = hex.DecodeString(masterKey)
-	if err != nil {
-		fmt.Println(err)
-		return err
-	}
-	fmt.Println(decodedMaster)
-	err = rootData.Decrypt(masterKey)
-	// err = rootData.Encrypt(masterKey)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return err
-	// }
-	fmt.Println(rootData)
+	masterKey := envViper.GetString(shared.APPLICATION_ENVIRONMENT_ENCRYPTION_KEY)
 
-	var rootBytes []byte
-	rootBytes, err = yaml.Marshal(rootData)
-	err = rootViper.ReadConfig(bytes.NewBuffer(rootBytes))
+	err = secureConfig.Encrypt(masterKey)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-	err = rootViper.WriteConfig()
+
+	var secureData []byte
+	secureData, err = yaml.Marshal(secureConfig)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-	return nil
+
+	err = globalViper.ReadConfig(bytes.NewBuffer(secureData))
+	if err != nil {
+		return err
+	}
+
+	return globalViper.WriteConfig()
+	// return nil
 }
