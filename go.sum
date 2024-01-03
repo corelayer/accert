@@ -1,9 +1,3 @@
-github.com/corelayer/go-application v0.0.0-20231229103302-000ef41c8ce0 h1:vUKl7MAKiLorcSu2j1AC8TG3qJiyUzkxK1R0Yl3ufiI=
-github.com/corelayer/go-application v0.0.0-20231229103302-000ef41c8ce0/go.mod h1:ZZWVJo1Bl60GlXpvFkM2fsr5tcp9i+uxotpF2WRNjVY=
-github.com/corelayer/go-application v0.0.0-20231229173822-7d749785b1a5 h1:4r2jn8nuk+4O7J3bOoe90SgUTJJIMpfzBkBeVArcq7k=
-github.com/corelayer/go-application v0.0.0-20231229173822-7d749785b1a5/go.mod h1:ZZWVJo1Bl60GlXpvFkM2fsr5tcp9i+uxotpF2WRNjVY=
-github.com/corelayer/go-application v0.0.0-20231230152429-71824e49ca6a h1:cYNjtvZiLpwesT0MSYwCxTUYWl5S8QcH/0Ny3TWkC1I=
-github.com/corelayer/go-application v0.0.0-20231230152429-71824e49ca6a/go.mod h1:ZZWVJo1Bl60GlXpvFkM2fsr5tcp9i+uxotpF2WRNjVY=
 github.com/corelayer/go-application v0.0.0-20231230152828-75a5921fc9f5 h1:8ofYPraHTFt4zQ4SN/x9CKlrb+94ivCo8QCxyIHxbIc=
 github.com/corelayer/go-application v0.0.0-20231230152828-75a5921fc9f5/go.mod h1:ZZWVJo1Bl60GlXpvFkM2fsr5tcp9i+uxotpF2WRNjVY=
 github.com/cpuguy83/go-md2man/v2 v2.0.3/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
