@@ -34,4 +34,9 @@ var Command = base.Command{
 		DecryptCommand,
 		GlobalCommand,
 	},
+	Configure: configureConfig,
+}
+
+func configureConfig(cmd *cobra.Command) {
+	base.AddLogTargetFlag(cmd)
 }

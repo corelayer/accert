@@ -17,16 +17,8 @@
 package config
 
 import (
-	"bytes"
-	"log/slog"
-	"os"
-
 	"github.com/corelayer/go-application/pkg/base"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	"github.com/corelayer/accert/cmd/accert/shared"
-	"github.com/corelayer/accert/pkg/global"
 )
 
 var GlobalCommand = base.Command{
@@ -40,54 +32,9 @@ var GlobalCommand = base.Command{
 	SubCommands: []base.Commander{
 		GlobalCreateCommand,
 	},
+	Configure: configureConfigGlobal,
 }
 
-var GlobalCreateCommand = base.Command{
-	Cobra: &cobra.Command{
-		Use:           "create",
-		Short:         "create config",
-		Long:          "ACME Protocol-based Certificate Manager - Global create config",
-		RunE:          executeGlobalCreate,
-		SilenceErrors: true,
-		SilenceUsage:  true,
-	},
-	SubCommands: nil,
-}
-
-func executeGlobalCreate(cmd *cobra.Command, args []string) error {
-	slog.Info("application started")
-	defer slog.Info("application terminated")
-
-	var (
-		err         error
-		globalViper *viper.Viper
-		envViper    *viper.Viper
-		data        []byte
-	)
-	_, err = os.Create(shared.RootFlags.ConfigFile)
-	if err != nil {
-		return err
-	}
-
-	globalViper = base.NewConfiguration(shared.RootFlags.ConfigFile, shared.RootFlags.SearchFlag).GetViper()
-
-	// Environment flags should go to different viper!!!!!
-	envViper = viper.New()
-	envViper.SetEnvPrefix(shared.APPLICATION_ENVIRONMENT_VARIABLE_PREFIX)
-	err = envViper.BindEnv(shared.APPLICATION_ENVIRONMENT_ENCRYPTION_KEY)
-	if err != nil {
-		return err
-	}
-
-	data, err = global.TemplateConfiguration.MarshalToYaml()
-	if err != nil {
-		return err
-	}
-
-	err = globalViper.ReadConfig(bytes.NewBuffer(data))
-	if err != nil {
-		return err
-	}
-
-	return globalViper.WriteConfig()
+func configureConfigGlobal(cmd *cobra.Command) {
+	base.AddLogTargetFlag(cmd)
 }

@@ -18,6 +18,7 @@ package daemon
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/corelayer/go-application/pkg/base"
 	"github.com/spf13/cobra"
@@ -33,9 +34,15 @@ var Command = base.Command{
 		SilenceUsage:  true,
 	},
 	SubCommands: nil,
+	Configure:   configureDaemon,
 }
 
 func execute(cmd *cobra.Command, args []string) error {
 	fmt.Println("DAEMON")
+	slog.Debug("DAEMON")
 	return nil
+}
+
+func configureDaemon(cmd *cobra.Command) {
+	base.AddLogTargetFlag(cmd)
 }

@@ -43,6 +43,7 @@ var Command = base.Command{
 		},
 	},
 	SubCommands: nil,
+	Configure:   configureConsole,
 }
 
 func execute(cmd *cobra.Command, args []string) error {
@@ -104,4 +105,8 @@ func execute(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	return nil
+}
+
+func configureConsole(cmd *cobra.Command) {
+	base.AddLogTargetFlag(cmd)
 }
